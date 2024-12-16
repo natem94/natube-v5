@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Box } from '@mui/material';
 
@@ -7,7 +7,15 @@ import Login from './containers/Login';
 import Register from './containers/Register';
 
 const App = () => {
-    const [isAuthenticated, setIsAuthenticated] = useState(false); 
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+    // Перевіряємо статус авторизації при завантаженні сторінки
+    useEffect(() => {
+        const storedAuthStatus = localStorage.getItem('isAuthenticated');
+        if (storedAuthStatus === 'true') {
+            setIsAuthenticated(true);
+        }
+    }, []);
 
     return (
         <Router>

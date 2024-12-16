@@ -33,13 +33,13 @@ const Register = () => {
         }
 
         try {
-            await createUserWithEmailAndPassword(auth, email, password); // Використовуємо ініціалізований auth
+            await createUserWithEmailAndPassword(auth, email, password); 
             setSuccess(true);
             setForm({ email: '', password: '', confirmPassword: '', error: '' });
 
-            setTimeout(() => navigate('/login'), 2000); // Перенаправлення на сторінку входу через 2 секунди
+            setTimeout(() => navigate('/login'), 2000); 
         } catch (err) {
-            setForm((prevForm) => ({ ...prevForm, error: err.message })); // Обробка помилок
+            setForm((prevForm) => ({ ...prevForm, error: err.message })); 
         }
     };
 

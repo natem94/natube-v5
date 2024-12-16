@@ -26,8 +26,9 @@ const Login = ({ setIsAuthenticated }) => {
         e.preventDefault();
         try {
             await signInWithEmailAndPassword(auth, form.email, form.password);
-            setIsAuthenticated(true); // Установлюємо статус автентифікації
-            navigate('/'); // Перенаправлення на / (Feed)
+            setIsAuthenticated(true);
+            localStorage.setItem('isAuthenticated', 'true'); // Зберігаємо статус авторизації
+            navigate('/');
         } catch (err) {
             setForm((prevForm) => ({ ...prevForm, error: 'Invalid email or password' }));
         }
@@ -36,8 +37,9 @@ const Login = ({ setIsAuthenticated }) => {
     const handleGoogleLogin = async () => {
         try {
             await signInWithPopup(auth, googleProvider);
-            setIsAuthenticated(true); // Установлюємо статус автентифікації
-            navigate('/'); // Перенаправлення на / (Feed)
+            setIsAuthenticated(true);
+            localStorage.setItem('isAuthenticated', 'true'); // Зберігаємо статус авторизації
+            navigate('/');
         } catch (err) {
             setForm((prevForm) => ({ ...prevForm, error: 'Google login failed' }));
         }
@@ -126,7 +128,7 @@ const Login = ({ setIsAuthenticated }) => {
                         fullWidth
                         variant="text"
                         sx={{ mt: 2 }}
-                        onClick={() => navigate('/register')} // Перенаправлення на реєстрацію
+                        onClick={() => navigate('/register')} 
                     >
                         Don’t have an account? Register here
                     </Button>
