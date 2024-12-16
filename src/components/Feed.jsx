@@ -28,14 +28,15 @@ const Feed = () => {
 
   // Функція сортування відео
   const sortVideos = (videos, sortBy) => {
-    if (!videos) return [];
-    if (sortBy === "views") {
-      return [...videos].sort((a, b) => b.statistics.viewCount - a.statistics.viewCount);  
-    } else if (sortBy === "likes") {
-      return [...videos].sort((a, b) => b.statistics.likeCount - a.statistics.likeCount);  
-    }
-    return videos;
+    if (!videos || videos.length === 0) return []; // Перевірка на порожній масив
+  
+    return [...videos].sort((a, b) => {
+      const aValue = a.statistics?.[sortBy + "Count"] || 0; // Безпечний доступ
+      const bValue = b.statistics?.[sortBy + "Count"] || 0; // Безпечний доступ
+      return bValue - aValue; // Сортування за спаданням
+    });
   };
+  
 
   // Завантажуємо відео для наступної або попередньої сторінки з троттлінгом
   const handleNextPage = () => {
@@ -82,7 +83,7 @@ const Feed = () => {
           <Button onClick={() => setViewMode("table")}>Table View</Button>
         </ButtonGroup>
 
-        {/* Додаємо кнопки для сортування */}
+        
         <ButtonGroup variant="contained" sx={{ mb: 2 }}>
           <Button onClick={() => setSortBy("views")}>Sort by Views</Button>
           <Button onClick={() => setSortBy("likes")}>Sort by Likes</Button>

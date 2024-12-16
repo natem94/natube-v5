@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { fetchFromAPI } from "../utils/fetchFromAPI";
+import debounce from 'lodash.debounce';
 
 // Кастомний хук для пагінації
 const usePagination = (selectedCategory) => {
@@ -8,7 +9,7 @@ const usePagination = (selectedCategory) => {
   const [prevPageToken, setPrevPageToken] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const loadVideos = (pageToken = "") => {
+  const loadVideos = debounce((pageToken = "") => {
     setLoading(true);  // Початок завантаження
     fetchFromAPI(`search?part=snippet&q=${selectedCategory}&pageToken=${pageToken}`)
       .then((data) => {
@@ -21,7 +22,7 @@ const usePagination = (selectedCategory) => {
         console.error("Error fetching videos:", error);
         setLoading(false);  // Завершення завантаження у разі помилки
       });
-  };
+  }, 500);  // Дебаунс на 500 мс, щоб зменшити кількість запитів
 
   // Завантаження відео при зміні категорії
   useEffect(() => {
