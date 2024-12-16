@@ -2,13 +2,14 @@ import React, { useEffect, useState } from "react";
 import { Box, Stack, Typography, ButtonGroup, Button } from "@mui/material";
 import { Videos, Categories } from "./";
 import usePagination from "../hooks/usePagination";  // Імпортуємо хук пагінації
+import { useDebounce } from "../hooks/useDebounce";  // Імпортуємо хук для дебаунсу
 
 const Feed = () => {
   const [selectedCategory, setSelectedCategory] = useState("New");
   const [viewMode, setViewMode] = useState("grid");
-  const [sortBy, setSortBy] = useState("views");  
+  const [sortBy, setSortBy] = useState("views");
 
-  // Використовуємо хук для пагінації
+  
   const {
     videos,
     nextPageToken,
@@ -17,9 +18,12 @@ const Feed = () => {
     loadVideos,
   } = usePagination(selectedCategory);
 
-  // Завантаження відео для нової категорії
+  
+  const debouncedSortBy = useDebounce(sortBy, 500);
+
+  
   useEffect(() => {
-    loadVideos(); // Завантажуємо першу сторінку відео для поточної категорії
+    loadVideos(); 
   }, [selectedCategory]);
 
   // Функція сортування відео
@@ -33,15 +37,15 @@ const Feed = () => {
     return videos;
   };
 
-  // Завантажуємо відео для наступної або попередньої сторінки
+  // Завантажуємо відео для наступної або попередньої сторінки з троттлінгом
   const handleNextPage = () => {
-    if (nextPageToken) {
+    if (nextPageToken && !loading) {
       loadVideos(nextPageToken);  // Завантажуємо наступну сторінку
     }
   };
 
   const handlePrevPage = () => {
-    if (prevPageToken) {
+    if (prevPageToken && !loading) {
       loadVideos(prevPageToken);  // Завантажуємо попередню сторінку
     }
   };
@@ -84,10 +88,10 @@ const Feed = () => {
           <Button onClick={() => setSortBy("likes")}>Sort by Likes</Button>
         </ButtonGroup>
 
-        {/* Відображення відео */}
-        <Videos videos={sortVideos(videos, sortBy)} viewMode={viewMode} loading={loading} />
 
-        {/* Кнопки пагінації */}
+        <Videos videos={sortVideos(videos, debouncedSortBy)} viewMode={viewMode} loading={loading} />
+
+        
         <Stack direction="row" justifyContent="space-between" sx={{ mt: 2 }}>
           <Button
             variant="outlined"

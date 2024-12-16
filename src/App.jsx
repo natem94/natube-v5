@@ -22,7 +22,6 @@ const App = () => {
             <Box sx={{ backgroundColor: '#000' }}>
                 <Navbar isAuthenticated={isAuthenticated} setIsAuthenticated={setIsAuthenticated} />
 
-              
                 <Routes>
                     {isAuthenticated ? (
                         <>
@@ -33,7 +32,6 @@ const App = () => {
                             <Route path="*" element={<Navigate to="/" />} />
                         </>
                     ) : (
-                       
                         <>
                             <Route path="/login" element={<Login setIsAuthenticated={setIsAuthenticated} />} />
                             <Route path="/register" element={<Register />} />
