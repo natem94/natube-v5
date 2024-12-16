@@ -3,8 +3,8 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { Box } from '@mui/material';
 
 import { ChannelDetail, VideoDetail, SearchFeed, Navbar, Feed } from './components';
-import Login from './containers/Login';
-import Register from './containers/Register';
+import Login from './auth/Login';
+import Register from './auth/Register';
 
 const App = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
